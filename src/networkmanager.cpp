@@ -498,6 +498,14 @@ void NetworkManager::handleRouteRumor(const Message& message, const QHostAddress
     if (origin != nodeId) {
         qDebug().noquote() << QString("[ROUTE RUMOR] Received from %1: Route to %2 (SeqNo: %3)")
                                .arg(senderId).arg(origin).arg(seqNo);
+        // Log NAT traversal info (LastIP/LastPort extraction)
+        qDebug().noquote() << QString("  [NAT INFO] Sender: %1:%2 (from UDP packet)")
+                               .arg(senderHost.toString()).arg(senderPort);
+        if (!message.getLastIP().isEmpty() || message.getLastPort() != 0) {
+            qDebug().noquote() << QString("  [NAT INFO] LastIP/Port in rumor: %1:%2")
+                                   .arg(message.getLastIP().isEmpty() ? "N/A" : message.getLastIP())
+                                   .arg(message.getLastPort());
+        }
     }
 
     // Determine if this is a direct connection

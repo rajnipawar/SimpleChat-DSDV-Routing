@@ -75,16 +75,8 @@ void SimpleChat::setupPeerDiscovery() {
         return;  // No peers to discover
     }
 
-    // Discover peers on specified ports
+    // Send discovery messages - peers will be added automatically when they respond
     networkManager->discoverLocalPeers(discoveryPorts);
-
-    // Also manually add known peers (for deterministic setup)
-    for (int port : discoveryPorts) {
-        if (port != serverPort) {
-            QString peerId = generateNodeId(port);
-            networkManager->addPeer(peerId, "127.0.0.1", port);
-        }
-    }
 
     window->appendMessage(QString("Attempting to discover peers on ports: %1")
         .arg(QString::number(discoveryPorts[0]) + "-" + QString::number(discoveryPorts.last())));
