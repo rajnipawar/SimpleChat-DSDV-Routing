@@ -107,6 +107,14 @@ make -j$(nproc)
 
 The executable will be: `build/SimpleChat_PA3`
 
+**To build with tests:**
+```bash
+mkdir build
+cd build
+cmake -DBUILD_TESTS=ON ..
+make -j$(nproc)
+```
+
 ## Running the Application
 
 ### Command Line Options
@@ -146,6 +154,40 @@ The executable will be: `build/SimpleChat_PA3`
 ```
 
 ## Testing Instructions
+
+### Unit Tests
+
+**Objective:** Verify PA3 implementation with automated tests
+
+**Building Tests:**
+```bash
+cd build
+cmake -DBUILD_TESTS=ON ..
+make -j$(nproc)
+```
+
+**Running Tests:**
+```bash
+# Direct execution
+./build/tests/tests
+
+# Or using CTest
+cd build
+ctest --output-on-failure
+```
+
+**Test Coverage:**
+- 20 comprehensive tests covering Message and Routing functionality
+- Tests DSDV routing, route rumors, HopLimit, LastIP/LastPort, and more
+- All tests should pass successfully
+
+**Expected Output:**
+```
+********* Start testing of TestPA3 *********
+...
+Totals: 22 passed, 0 failed, 0 skipped
+********* Finished testing of TestPA3 *********
+```
 
 ### Test 1: Local 3-Node Routing
 
