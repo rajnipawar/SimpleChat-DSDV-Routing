@@ -3,6 +3,12 @@
 # Launch 3 nodes for testing PA3 routing
 
 echo "Launching 3 SimpleChat PA3 nodes for local testing..."
+
+# Clean up any existing processes first
+echo "Cleaning up existing processes..."
+./scripts/stop_all.sh > /dev/null 2>&1
+sleep 1
+
 echo "Press Ctrl+C to stop all nodes"
 
 # Trap Ctrl+C to kill all child processes

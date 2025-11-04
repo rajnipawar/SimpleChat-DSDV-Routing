@@ -4,6 +4,12 @@
 
 echo "=== SimpleChat PA3 - NAT Traversal Test ==="
 echo ""
+
+# Clean up any existing processes first
+echo "Cleaning up existing processes..."
+./scripts/stop_all.sh > /dev/null 2>&1
+sleep 1
+
 echo "This script demonstrates:"
 echo "1. Rendezvous server in --noforward mode"
 echo "2. Two regular nodes discovering each other"

@@ -224,7 +224,14 @@ void NetworkManager::processReceivedMessage(const Message& message, const QHostA
             handleAntiEntropyResponse(message);
             break;
         case Message::ACK:
-            handleAck(message);
+            // PA3: Check if ACK is for us, otherwise forward it
+            if (message.getDestination() == nodeId) {
+                handleAck(message);
+            } else {
+                // Forward ACK to its destination
+                Message forwardAck = message;
+                forwardMessage(forwardAck);
+            }
             break;
         case Message::ROUTE_RUMOR:
             handleRouteRumor(message, senderHost, senderPort);
@@ -592,12 +599,10 @@ void NetworkManager::forwardRumorToRandomNeighbor(const Message& message, const 
     QString randomPeerId = candidates[randomIndex];
     const PeerInfo& randomPeer = peers[randomPeerId];
 
-    // Create new rumor with updated LastIP/LastPort
-    Message forwardRumor = message;
-    forwardRumor.setLastIP(QHostAddress(QHostAddress::LocalHost).toString());
-    forwardRumor.setLastPort(serverPort);
-
-    QByteArray datagram = forwardRumor.toDatagram();
+    // Forward rumor - don't set LastIP/LastPort here
+    // The receiver will extract the actual IP/port from the UDP packet
+    // This enables proper NAT traversal
+    QByteArray datagram = message.toDatagram();
     sendDatagram(datagram, QHostAddress(randomPeer.host), randomPeer.port);
 
     // Only log forwarding for non-self rumors
